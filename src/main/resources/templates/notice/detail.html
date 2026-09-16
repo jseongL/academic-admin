@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>가천대학교 포털 - 공지사항 상세</title>
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .notice-header {
+            border-bottom: 2px solid #002D62;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+        .notice-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .notice-info {
+            font-size: 14px;
+            color: #777;
+            display: flex;
+            justify-content: space-between;
+        }
+        .notice-content {
+            min-height: 150px;
+            padding: 20px 0;
+            line-height: 1.6;
+            color: #444;
+        }
+        .btn-group {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        .btn-back {
+            background-color: #002D62;
+        }
+        .btn-back:hover {
+            background-color: #001f40;
+        }
+        .btn-original {
+            background-color: #555;
+        }
+        .btn-original:hover {
+            background-color: #333;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="notice-header">
+            <!-- 전달받은 공지 제목 출력 -->
+            <div class="notice-title" th:text="${notice.title}">공지 제목</div>
+            <div class="notice-info">
+                <span>작성자: 가천대학교</span>
+                <span th:text="'작성일: ' + ${notice.date}">2026.09.15</span>
+            </div>
+        </div>
+        
+        <div class="notice-content" th:text="${notice.content}">
+            본문 내용
+        </div>
+
+        <div class="btn-group">
+            <a href="/dashboard" class="btn btn-back">대시보드로 돌아가기</a>
+            <a href="https://www.gachon.ac.kr/kor/7986/subview.do" target="_blank" class="btn btn-original">가천대 원문 페이지 가기</a>
+        </div>
+    </div>
+
+</body>
+</html>

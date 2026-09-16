@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>가천포털시스템 - 홈</title>
+<style>
+  :root{
+    --navy-900:#141f38;
+    --navy-800:#1b2b4d;
+    --navy-700:#22355f;
+    --blue-600:#2c5c9c;
+    --blue-500:#3d75c2;
+    --blue-100:#eaf1fb;
+    --blue-50:#f4f8fd;
+    --border:#e2e6ec;
+    --text:#333a45;
+    --text-mute:#8b93a0;
+    --bg:#eef1f5;
+    --gold:#e0a63a;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:"Malgun Gothic","Apple SD Gothic Neo","Noto Sans KR",sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    font-size:13px;
+  }
+  a{text-decoration:none;color:inherit;}
+  table{width:100%;border-collapse:collapse;font-size:12.5px;}
+  th{background:var(--blue-100);color:var(--navy-700);padding:8px 6px;border-bottom:2px solid #d7e2f0;font-weight:600;white-space:nowrap;}
+  td{padding:8px 6px;text-align:center;border-bottom:1px solid #eef0f3;color:#4a5361;}
+  tr:last-child td{border-bottom:none;}
+
+  /* ---------- Top header ---------- */
+  .top-header{
+    height:60px;
+    background:var(--navy-900);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 24px;
+    color:#fff;
+  }
+  .logo-area{display:flex;align-items:center;gap:12px;}
+  .logo-badge{
+    width:36px;height:36px;border-radius:8px;
+    background:linear-gradient(135deg,var(--blue-500),var(--navy-700));
+    display:flex;align-items:center;justify-content:center;
+    font-weight:800;font-size:15px;
+  }
+  .logo-text .line1{font-size:16px;font-weight:700;letter-spacing:.5px;}
+  .logo-text .line2{font-size:10px;color:#9fb0cc;letter-spacing:1.5px;margin-top:1px;}
+  .header-right{display:flex;align-items:center;gap:18px;font-size:12.5px;color:#dce4f0;}
+  .time-chip{font-variant-numeric:tabular-nums;color:#fff;}
+  .btn-extend{
+    background:var(--blue-500);color:#fff;border-radius:3px;
+    padding:5px 10px;font-size:12px;cursor:pointer;
+  }
+  .header-right .divider{color:#3a4a68;}
+  .avatar-circle{
+    width:30px;height:30px;border-radius:50%;
+    background:#33456e;display:flex;align-items:center;justify-content:center;
+    font-size:10px;color:#fff;
+  }
+
+  /* ---------- Main nav ---------- */
+  .main-nav{
+    background:var(--navy-800);
+    display:flex;
+    justify-content:center;
+  }
+  .main-nav a{
+    color:#c9d4e6;
+    padding:13px 28px;
+    font-size:13.5px;
+    border-left:1px solid rgba(255,255,255,.07);
+    cursor:pointer;
+  }
+  .main-nav a:first-child{border-left:none;}
+  .main-nav a:hover{background:rgba(255,255,255,.05);color:#fff;}
+
+  /* ---------- Layout container ---------- */
+  .container{max-width:1500px;margin:0 auto;padding:18px 20px 40px;}
+
+  /* ---------- Shared widget shell ---------- */
+  .widget{
+    background:#fff;
+    border-radius:4px;
+    box-shadow:0 1px 3px rgba(20,30,60,.08);
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
+  }
+  .widget-header{
+    background:linear-gradient(to right,var(--navy-800),var(--blue-600));
+    color:#fff;
+    padding:10px 14px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    font-size:14px;
+    font-weight:700;
+  }
+  .widget-header .title-icon{margin-right:6px;font-size:13px;}
+  .widget-tools{font-size:12px;opacity:.85;display:flex;gap:10px;cursor:pointer;}
+  .widget-body{padding:14px;flex:1;font-size:12.5px;}
+  .widget-body.center-empty{
+    display:flex;align-items:center;justify-content:center;
+    min-height:90px;color:var(--text-mute);
+  }
+  .empty-row td{color:var(--text-mute);padding:22px 6px;}
+
+  /* ---------- Top row: 알리미 / 공지사항 / 학사일정 ---------- */
+  .top-row{display:flex;gap:16px;margin-bottom:16px;align-items:stretch;}
+  .top-row .widget{flex:1;min-width:0;}
+
+  .alarm-note{font-size:12.5px;color:#5b6270;padding:10px 14px;border-bottom:1px solid var(--border);display:flex;gap:8px;align-items:center;}
+  .alarm-note .bell{color:var(--gold);}
+
+  .grad-sub-title{display:flex;align-items:center;justify-content:space-between;font-weight:700;color:var(--navy-700);margin-bottom:10px;}
+  .grad-sub-title .icons{display:flex;gap:6px;color:var(--text-mute);font-size:12px;}
+
+  .chart-row{display:flex;gap:16px;align-items:center;}
+  .donut{
+    width:104px;height:104px;border-radius:50%;flex:none;position:relative;
+    background:conic-gradient(
+      #1c3a68 0 29.2%,
+      #2f6fb0 29.2% 40%,
+      #5fa8d8 40% 45%,
+      #a9d3ee 45% 71.7%,
+      var(--gold) 71.7% 89.2%,
+      #dfe3e8 89.2% 100%
+    );
+  }
+  .donut-inner{
+    position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+    width:70%;height:70%;border-radius:50%;background:#fff;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;line-height:1.2;
+  }
+  .donut-inner .num{font-size:18px;font-weight:800;color:var(--navy-800);}
+  .donut-inner .label{font-size:10px;color:var(--text-mute);}
+  .legend{list-style:none;margin:0;padding:0;font-size:11.5px;flex:1;}
+  .legend li{display:flex;align-items:center;gap:6px;padding:2px 0;color:#4a5361;}
+  .legend li span.swatch{width:9px;height:9px;border-radius:2px;flex:none;}
+  .legend li b{margin-left:auto;color:var(--navy-800);}
+  .grad-caption{font-size:11px;color:var(--text-mute);margin-top:8px;}
+
+  .mail-box{
+    margin-top:12px;padding:10px 12px;background:var(--blue-50);border-radius:4px;
+    display:flex;align-items:center;justify-content:space-between;font-size:12.5px;color:var(--navy-700);font-weight:600;
+  }
+  .mail-box .count{color:#d9534f;font-weight:800;}
+  .foot-note{font-size:10.5px;color:var(--text-mute);margin-top:10px;line-height:1.5;}
+
+  /* tabs */
+  .tabs{display:flex;gap:2px;border-bottom:1px solid var(--border);padding:0 10px;background:#fafbfd;}
+  .tabs .tab{padding:9px 12px;font-size:12.5px;color:#7c8494;cursor:pointer;border-bottom:2px solid transparent;}
+  .tabs .tab.active{color:var(--navy-800);font-weight:700;border-bottom:2px solid var(--blue-500);}
+
+  .notice-list{list-style:none;margin:0;padding:8px 14px;}
+  .notice-list li{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px dashed #eef0f4;font-size:12.5px;}
+  .notice-list li:last-child{border-bottom:none;}
+  .notice-list .dot{width:5px;height:5px;border-radius:50%;background:var(--blue-500);flex:none;}
+  .notice-list .title{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#3a414d;}
+  .notice-list .date{color:var(--text-mute);font-size:11px;flex:none;}
+
+  .cal-nav{display:flex;align-items:center;gap:10px;font-weight:700;}
+  .cal-nav .arrow{cursor:pointer;color:#cdd6e6;font-weight:400;}
+  .cal-dots{display:flex;gap:4px;margin-left:auto;}
+  .cal-dots span{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.35);}
+  .cal-dots span.on{background:#fff;}
+  .sched-list{list-style:none;margin:0;padding:12px 14px;}
+  .sched-list li{display:flex;align-items:center;gap:8px;font-size:12.5px;padding:4px 0;}
+  .sched-list li:before{content:"";width:6px;height:6px;border-radius:50%;background:#4caf7d;}
+
+  /* ---------- Icon toolbar ---------- */
+  .toolbar{
+    display:flex;background:#fff;border-radius:4px;box-shadow:0 1px 3px rgba(20,30,60,.08);
+    padding:14px 10px;margin-bottom:18px;
+  }
+  .toolbar .tool{
+    flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;
+    font-size:12px;color:#5b6270;cursor:pointer;padding:4px 4px;
+  }
+  .toolbar .tool .ic{
+    width:38px;height:38px;border-radius:8px;background:#f0f3f8;
+    display:flex;align-items:center;justify-content:center;font-size:17px;color:var(--blue-600);
+  }
+  .toolbar .tool.active{color:var(--blue-600);font-weight:700;}
+  .toolbar .tool.active .ic{background:var(--blue-600);color:#fff;}
+
+  /* ---------- Widgets grid ---------- */
+  .widgets-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:16px;
+  }
+
+  .select-mini{
+    font-size:12px;border:1px solid var(--border);border-radius:3px;padding:3px 6px;color:#4a5361;background:#fff;
+  }
+  .header-flex-tools{display:flex;align-items:center;gap:8px;font-weight:400;font-size:12px;}
+
+  .empty-state{
+    padding:26px 0;text-align:center;color:var(--text-mute);font-size:12.5px;
+  }
+
+  /* 강의시간표 */
+  .class-list{list-style:none;margin:0;padding:0;}
+  .class-list li{display:flex;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid #f2f3f6;font-size:12.5px;}
+  .class-list li:last-child{border-bottom:none;}
+  .class-list .period{color:var(--blue-600);font-weight:700;width:34px;flex:none;}
+  .class-list .time{color:var(--text-mute);width:92px;flex:none;}
+  .class-list .subj{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+
+  /* toggle switch */
+  .toggle{width:34px;height:18px;background:rgba(255,255,255,.25);border-radius:10px;position:relative;cursor:pointer;}
+  .toggle .knob{width:14px;height:14px;border-radius:50%;background:#fff;position:absolute;top:2px;right:2px;}
+  .toggle-label{font-size:11px;margin-right:6px;}
+
+  /* 신착도서 */
+  .book-row{display:flex;gap:10px;align-items:flex-end;}
+  .book-cover{
+    width:78px;height:104px;border-radius:3px;flex:none;
+    display:flex;align-items:flex-end;justify-content:center;text-align:center;
+    color:#fff;font-size:10px;font-weight:700;padding:6px 4px;line-height:1.3;
+  }
+  .book-cap{font-size:10.5px;color:#5b6270;text-align:center;margin-top:6px;}
+  .book-col{flex:1;}
+  .book-nav-arrow{align-self:center;color:#c3cad6;font-size:16px;cursor:pointer;}
+
+  /* 받은편지함 */
+  .mail-list{list-style:none;margin:0;padding:0;}
+  .mail-list li{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px dashed #eef0f4;font-size:12.5px;}
+  .mail-list li:last-child{border-bottom:none;}
+  .mail-list .dot{width:5px;height:5px;border-radius:50%;background:var(--blue-500);flex:none;}
+  .mail-list .title{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .mail-list .title.bold{font-weight:700;}
+  .mail-list .date{color:var(--text-mute);font-size:11px;flex:none;}
+
+  /* 납부현황 */
+  .pay-lines{padding:4px 0 14px;}
+  .pay-lines .line{display:flex;justify-content:space-between;font-size:13px;padding:6px 0;}
+  .pay-lines .line b{color:var(--navy-800);}
+  .pay-lines .amount{color:var(--blue-600);font-weight:800;}
+  .btn-outline-row{display:flex;gap:8px;}
+  .btn-outline{
+    flex:1;text-align:center;border:1px solid var(--border);border-radius:3px;
+    padding:8px 4px;font-size:11.5px;color:#4a5361;cursor:pointer;background:#fafbfd;
+  }
+
+  /* 페이스북 */
+  .fb-card{border:1px solid var(--border);border-radius:4px;overflow:hidden;}
+  .fb-media{
+    height:130px;background:linear-gradient(135deg,#3a4f7a,#1c2a4a);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;text-align:center;padding:10px;
+  }
+  .fb-media .cap1{font-size:14px;font-weight:800;letter-spacing:1px;}
+  .fb-media .cap2{font-size:10.5px;color:#c7d0e4;margin-top:6px;}
+  .fb-media .cap3{font-size:16px;font-weight:800;margin-top:10px;}
+
+  /* 성적조회 label */
+  .gpa-line{font-size:12.5px;color:#4a5361;margin-bottom:8px;}
+  .gpa-line b{color:var(--blue-600);}
+
+  /* 주간식단표 */
+  .meal-tabs{display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:2px;}
+  .meal-tabs .tab{flex:1;text-align:center;padding:8px 2px;font-size:11.5px;color:#7c8494;cursor:pointer;border-bottom:2px solid transparent;}
+  .meal-tabs .tab.active{color:var(--navy-800);font-weight:700;border-bottom:2px solid var(--blue-500);}
+  .menu-items{margin:0;padding-left:16px;color:#4a5361;}
+  .menu-items li{padding:2px 0;}
+
+  /* 좌석현황 */
+  .util-good{color:#3d8b53;font-weight:700;}
+  .util-zero{color:#b0454a;font-weight:700;}
+  .timestamp-note{font-size:11px;color:var(--text-mute);margin-bottom:8px;text-align:right;}
+
+  /* ---------- Footer ---------- */
+  .site-footer{
+    background:#fff;border-top:1px solid var(--border);
+    padding:22px 20px;margin-top:24px;
+    display:flex;align-items:center;gap:20px;flex-wrap:wrap;
+    font-size:11.5px;color:var(--text-mute);
+  }
+  .site-footer .fname{font-weight:800;color:var(--navy-800);font-size:15px;}
+  .site-footer .lines{line-height:1.7;}
+  .site-footer .policy{margin-left:auto;font-weight:700;color:#4a5361;}
+
+  @media (max-width:1100px){
+    .widgets-grid{grid-template-columns:repeat(2,1fr);}
+    .top-row{flex-direction:column;}
+  }
+  @media (max-width:680px){
+    .widgets-grid{grid-template-columns:1fr;}
+    .toolbar{flex-wrap:wrap;}
+    .toolbar .tool{flex:1 1 25%;}
+  }
+</style>
+</head>
+<body>
+
+  <!-- ================= Top header ================= -->
+  <header class="top-header">
+    <div class="logo-area">
+      <div class="logo-badge">G+</div>
+      <div class="logo-text">
+        <div class="line1">가천포털시스템</div>
+        <div class="line2">PORTAL SYSTEM</div>
+      </div>
+    </div>
+    <div class="header-right">
+      <span class="time-chip" id="headerTimer">00:30:00</span>
+      <span class="btn-extend" onclick="extendSession()">연장</span>
+      <span class="divider">|</span>
+      <span>포틀릿 설정</span>
+      <span onclick="forceLogout()" style="cursor:pointer;">로그아웃</span>
+      <div class="avatar-circle">학생</div>
+    </div>
+  </header>
+
+  <!-- ================= Main nav ================= -->
+  <nav class="main-nav">
+    <a>홈페이지</a>
+    <a>학사행정시스템</a>
+    <a>클라우드 메일</a>
+    <a>나이스시스템</a>
+    <a>중앙도서관</a>
+    <a>사이버캠퍼스</a>
+    <a>출결관리</a>
+    <a>연구노트</a>
+  </nav>
+
+  <div class="container">
+
+    <!-- ================= Top row: 알리미 / 공지사항 / 학사일정 ================= -->
+    <div class="top-row">
+
+      <!-- 알리미 -->
+      <div class="widget">
+        <div class="widget-header">
+          <span><span class="title-icon">🔔</span>알리미</span>
+        </div>
+        <div class="alarm-note"><span class="bell">●</span> 오늘의 휴강이 없습니다.</div>
+        <div class="widget-body">
+          <div class="grad-sub-title">
+            <span>🎓 학점취득현황</span>
+            <span class="icons">☰ 📋</span>
+          </div>
+          <div class="chart-row">
+            <div class="donut">
+              <div class="donut-inner">
+                <span class="num">85</span>
+                <span class="label">/ 120 졸업기준<br>학점</span>
+              </div>
+            </div>
+            <ul class="legend">
+              <li><span class="swatch" style="background:#1c3a68"></span>전공선택 <b>35</b></li>
+              <li><span class="swatch" style="background:#2f6fb0"></span>전공필수 <b>13</b></li>
+              <li><span class="swatch" style="background:#5fa8d8"></span>교양필수 <b>6</b></li>
+              <li><span class="swatch" style="background:#a9d3ee"></span>교양선택 <b>32</b></li>
+              <li><span class="swatch" style="background:var(--gold)"></span>교양계열 <b>21</b></li>
+              <li><span class="swatch" style="background:#dfe3e8"></span>미이수 <b>13</b></li>
+            </ul>
+          </div>
+          <div class="mail-box">
+            <span>✉ 이메일</span>
+            <span class="count">22건</span>
+          </div>
+          <div class="foot-note">※졸업이수 기준 및 자세한 내용은 졸업상세정보를 참고하여 주시기 바랍니다.</div>
+        </div>
+      </div>
+
+	  <!-- 공지사항 -->
+	  <div class="widget">
+	    <div class="widget-header">
+	      <span><span class="title-icon"></span>공지사항</span>
+	      <span class="widget-tools">＋</span>
+	    </div>
+	    <div class="tabs">
+	      <div class="tab active">일반</div>
+	      <div class="tab">뉴스</div>
+	      <div class="tab">학사</div>
+	      <div class="tab">장학</div>
+	      <div class="tab">학생</div>
+	      <div class="tab">취업</div>
+	      <div class="tab">채용</div>
+	    </div>
+		<ul class="notice-list">
+		  <li th:if="${#lists.isEmpty(noticeList)}" style="justify-content: center; color: #888; font-size: 13px;">
+		    공지사항을 불러오는 중이거나 데이터가 없습니다.
+		  </li>
+
+		  <!-- 가천대 원문 상세 페이지로 바로 이동하도록 notice.link 적용 -->
+		                  <li th:each="notice : ${noticeList}" style="padding: 0;">
+		                      <a th:href="${notice.link}" target="_blank"
+		                         style="display: flex; align-items: center; width: 100%;
+		                                padding: 8px 4px; text-decoration: none; color: inherit;
+		                                gap: 8px;">
+		                          <span class="dot"></span>
+		                          <span class="title" th:text="${notice.title}"
+		                                style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1;">공지 제목</span>
+		                          <span class="date" th:text="${notice.date}">2026.09.15</span>
+		    </a>
+		  </li>
+		</ul>
+	  </div>
+
+      <!-- 학사일정 -->
+      <div class="widget">
+        <div class="widget-header">
+          <span><span class="title-icon">🎓</span>학사일정</span>
+          <div class="cal-nav">
+            <span class="arrow">‹</span> 2026.09 <span class="arrow">›</span>
+            <span class="cal-dots"><span class="on"></span><span></span></span>
+            <span>＋</span>
+          </div>
+        </div>
+        <ul class="sched-list">
+          <li>[09.24] 수업일수(1/4)</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ================= Icon toolbar ================= -->
+    <div class="toolbar">
+      <div class="tool active"><div class="ic">▦</div>전체보기</div>
+      <div class="tool"><div class="ic">📄</div>재증명</div>
+      <div class="tool"><div class="ic">🏫</div>대학알리미<br>포털사이트</div>
+      <div class="tool"><div class="ic">💻</div>WINS시스템</div>
+      <div class="tool"><div class="ic">🧑‍💼</div>현장실습</div>
+      <div class="tool"><div class="ic">💳</div>등록금</div>
+      <div class="tool"><div class="ic">🪙</div>연말정산</div>
+      <div class="tool"><div class="ic">🖥️</div>원격지원</div>
+    </div>
+
+    <!-- ================= Widgets grid ================= -->
+    <div class="widgets-grid">
+
+      <!-- 졸업이수기준취득현황(학부) -->
+      <div class="widget">
+        <div class="widget-header">
+          <span><span class="title-icon">🎓</span>졸업이수기준취득현황(학부)</span>
+          <span class="widget-tools">⧉ ✕</span>
+        </div>
+        <div class="widget-body">
+          <div style="font-weight:700;color:var(--navy-700);margin-bottom:8px;">AI·소프트웨어학부(인공지능전공)</div>
+          <table>
+            <thead><tr><th>이수구분</th><th>이수기준</th><th>취득학점</th></tr></thead>
+            <tbody>
+              <tr><td>교양필수(기초)</td><td>13</td><td>6</td></tr>
+              <tr><td>인간과예술(융합)</td><td>-</td><td>0</td></tr>
+              <tr><td>사회와역사(융합)</td><td>-</td><td>0</td></tr>
+              <tr><td>과학과정보통신(융합)</td><td>-</td><td>0</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 나의교육과정 -->
+      <div class="widget">
+        <div class="widget-header">
+          <span><span class="title-icon">📘</span>나의교육과정</span>
+          <span class="widget-tools">⧉ ✕</span>
+        </div>
+        <div class="tabs">
+          <div class="tab active">1학년</div>
+          <div class="tab">2학년</div>
+          <div class="tab">3학년</div>
+          <div class="tab">4학년</div>
+          <div class="tab">전체</div>
+          <select class="select-mini" style="margin-left:auto;">
+            <option>교육과정년도 2021</option>
+          </select>
+        </div>
+        <div class="widget-body" style="padding-top:8px;">
+          <table>
+            <thead><tr><th>학기</th><th>이수구분</th><th>교과목코드</th><th>교과목명</th><th>학점</th></tr></thead>
+            <tbody>
+              <tr><td>1-1학기</td><td>교필</td><td>13552</td><td>창의 NTree</td><td>1</td></tr>
+              <tr><td>1-1학기</td><td>교필</td><td>13529</td><td>College English 1</td><td>1</td></tr>
+              <tr><td>1-1학기</td><td>교필</td><td>11374</td><td>인성세미나</td><td>1</td></tr>
+              <tr><td>1-1학기</td><td>전필</td><td>09437</td><td>소프트웨어수학</td><td>3</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 구글캘린더 -->
+      <div class="widget">
+        <div class="widget-header">
+          <span><span class="title-icon">🔗</span>구글캘린더</span>
+          <div class="header-flex-tools">
+            <span class="arrow">‹</span> 2026.09.16(수) 📅 <span class="arrow">›</span>
+          </div>
+        </div>
+        <div class="widget-body center-empty">조회된 일정이 없습니다.</div>
+      </div>
+
+      <!-- 강의시간표(학생) -->
+      <div class="widget">
+        <div class="widget-header">
+          <span><span class="title-icon">🕒</span>강의시간표(학생)</span>
+          <div class="header-flex-tools">
+            <span class="arrow">‹</span> 2026.09.16(수) 📅 <span class="arrow">›</span>
+          </div>
+        </div>
+        <div class="widget-body">
+          <ul class="class-list">
+            <li><span class="period">1교시</span><span class="time">09:00~09:50</span><span class="subj">기술과세계사전환(1) 화상강의강...</span></li>
+            <li><span class="period">2교시</span><span class="time">10:00~10:50</span><span class="subj">기술과세계사전환(1) 화상강의강...</span></li>
+            <li><span class="period">3교시</span><span class="time">11:00~11:50</span><span class="subj">기술과세계사전환(1) 화상강의강...</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 출결현황(학생) -->
+      <div class="widget">
+        <div class="widget-header">
+          <span><span class="title-icon">✅</span>출결현황(학생)</span>
+          <span class="widget-tools">⧉ ✕</span>
+        </div>
+        <div class="widget-body">
+          <div style="color:var(--text-mute);margin-bottom:8px;">2026학년도 2학기</div>
+          <table>
+            <thead><tr><th>교과목명</th><th>출석</th><th>결석</th><th>지각</th></tr></thead>
+            <tbody>
+              <tr><td>P-실무프로젝트</td><td>0</td><td>0</td><td>0</td></tr>
+              <tr><td>기술과세계사전환</td><td>3</td><td>0</td><td>0</td></tr>
+              <tr><td>머신러닝</td><td>10</td><td>0</td><td>0</td></tr>
+              <tr><td>취·창업 진로세미나</td><td>0</td><td>0</td><td>0</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 중앙도서관 신착도서 -->
+      <div class="widget">
+        <div class="widget-header">
+          <span><span class="title-icon">📚</span>중앙도서관 신착도서</span>
+          <div class="header-flex-tools">
+            <span class="toggle-label">글로벌</span>
+            <div class="toggle"><div class="knob"></div></div>
+          </div>
+        </div>
+        <div class="widget-body">
+          <div class="book-row">
+            <div class="book-col">
+              <div class="book-cover" style="background:linear-gradient(160deg,#3a5c86,#16233f);">RESEARCH<br>METHODS</div>
+              <div class="book-cap">Research meth…</div>
+            </div>
+            <div class="book-col">
+              <div class="book-cover" style="background:linear-gradient(160deg,#4a7fae,#22355f);">INTRODUCING<br>LINGUISTICS</div>
+              <div class="book-cap">Introducing lin…</div>
+            </div>
+            <div class="book-col">
+              <div class="book-cover" style="background:linear-gradient(160deg,#dfe6ee,#8fa6c2);color:#1b2b4d;">MANAGEMENT</div>
+              <div class="book-cap">Management</div>
+            </div>
+            <div class="book-nav-arrow">›</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 교직이수현황 -->
+      <div class="widget">
+        <div class="widget-header">
+          <span><span class="title-icon">🏷️</span>교직이수현황</span>
+          <span class="widget-tools">✕</span>
+        </div>
+        <div class="widget-body">
+          <table>
+            <thead><tr><th>소속학부(과)</th><th>교과목</th><th>학점</th><th>평가</th></tr></thead>
+            <tbody><tr class="empty-row"><td colspan="4">등록된 데이터가 없습니다.</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 휴보강내역(학생) -->
+      <div class="widget">
+        <div class="widget-header">
+          <span><span class="title-icon">🔁</span>휴보강내역(학생)</span>
+          <span class="widget-tools">⧉ ✕</span>
+        </div>
+        <div class="widget-body">
+          <table>
+            <thead><tr><th>교과목명</th><th>휴강일(교시)</th><th>보강일(교시)</th></tr></thead>
+            <tbody><tr class="empty-row"><td colspan="3">등록된 데이터가 없습니다.</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 받은편지함 -->
+      <div class="widget">
+        <div class="widget-header">
+          <span><span class="title-icon">✉️</span>받은편지함</span>
+          <span class="widget-tools">⧉ ✕</span>
+        </div>
+        <div class="widget-body">
+          <ul class="mail-list">
+            <li><span class="dot"></span><span class="title">새롭게 사용해 볼 이미지 스타일 4개</span><span class="date">2026.09.15</span></li>
+            <li><span class="dot"></span><span class="title">🎁 PhotoDirector 365 3개월 무료 혜택 …</span><span class="date">2026.09.11</span></li>
+            <li><span class="dot"></span><span class="title">새롭게 사용해 볼 이미지 스타일 4개</span><span class="date">2026.09.09</span></li>
+            <li><span class="dot"></span><span class="title">보안 알림</span><span class="date">2026.09.03</span></li>
+            <li><span class="dot"></span><span class="title bold">Ask anything – really</span><span class="date">2026.09.02</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 납부현황 -->
+      <div class="widget">
+        <div class="widget-header">
+          <span><span class="title-icon">💰</span>납부현황</span>
+          <span class="widget-tools">＋</span>
+        </div>
+        <div class="widget-body">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+            <select class="select-mini"><option>2026학년도 2학기</option></select>
+            <span style="color:var(--text-mute);">등록(선택경비미납)</span>
+          </div>
+          <div class="pay-lines">
+            <div class="line"><span>[납부예정금액]</span><span class="amount">W 1,188,000</span></div>
+            <div class="line"><span>[실 납부금액]</span><span class="amount">W 1,188,000</span></div>
+          </div>
+          <div class="btn-outline-row">
+            <div class="btn-outline">등록금 납입영수증</div>
+            <div class="btn-outline">교육비 납입증명서</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 페이스북 -->
+      <div class="widget">
+        <div class="widget-header">
+          <span><span class="title-icon">📘</span>페이스북</span>
+          <span class="widget-tools">⧉ ✕</span>
+        </div>
+        <div class="widget-body">
+          <div class="fb-card">
+            <div class="fb-media">
+              <div class="cap1">UTOPIA</div>
+              <div class="cap2">무한한 가능성 파헤치는 Ri…</div>
+              <div class="cap3">무한전야</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 수강신청내역 -->
+      <div class="widget">
+        <div class="widget-header">
+          <span><span class="title-icon">🔗</span>수강신청내역</span>
+          <span class="widget-tools">⧉ ✕</span>
+        </div>
+        <div class="widget-body">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+            <select class="select-mini"><option>2026학년도 2학기</option></select>
+            <span>신청학점 : <b style="color:var(--blue-600);">13</b></span>
+          </div>
+          <table>
+            <thead><tr><th>교과목명</th><th>학점</th><th>교수명</th><th>이수</th></tr></thead>
+            <tbody>
+              <tr><td>머신러닝</td><td>3</td><td>정옥란</td><td>전선</td></tr>
+              <tr><td>컴퓨터구조</td><td>3</td><td>이정훈</td><td>전선</td></tr>
+              <tr><td>P-실무프로젝트</td><td>3</td><td>조해민</td><td>전필</td></tr>
+              <tr><td>취·창업 진로세미나</td><td>1</td><td>안종현</td><td>교필</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 학적변동현황 -->
+      <div class="widget">
+        <div class="widget-header">
+          <span><span class="title-icon">📄</span>학적변동현황</span>
+          <span class="widget-tools">⧉ ✕</span>
+        </div>
+        <div class="widget-body">
+          <table>
+            <thead><tr><th>학년도</th><th>학기</th><th>변동구분</th><th>변동일자</th></tr></thead>
+            <tbody>
+              <tr><td>2025</td><td>2학기</td><td>복학</td><td>2025.07.14</td></tr>
+              <tr><td>2023</td><td>1학기</td><td>휴학</td><td>2023.04.18</td></tr>
+              <tr><td>2023</td><td>1학기</td><td>휴학</td><td>2023.02.28</td></tr>
+              <tr><td>2022</td><td>2학기</td><td>휴학</td><td>2022.08.01</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 성적조회 -->
+      <div class="widget">
+        <div class="widget-header">
+          <span><span class="title-icon">📝</span>성적조회</span>
+          <span class="widget-tools">⧉ ✕</span>
+        </div>
+        <div class="widget-body">
+          <div style="margin-bottom:8px;"><select class="select-mini"><option>2026학년도 1학기</option></select></div>
+          <div class="gpa-line">신청(평점평균반영): <b>14</b> 취득: <b>14</b></div>
+          <table>
+            <thead><tr><th>과목명</th><th>이수구분</th><th>학점</th><th>평가</th></tr></thead>
+            <tbody>
+              <tr><td>데이터베이스 및 실습</td><td>전선</td><td>3</td><td>A+</td></tr>
+              <tr><td>데이터과학</td><td>전선</td><td>3</td><td>A+</td></tr>
+              <tr><td>디지털마케팅</td><td>전선</td><td>3</td><td>A+</td></tr>
+              <tr><td>인공지능개론</td><td>전선</td><td>3</td><td>A+</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 장학내역 -->
+      <div class="widget">
+        <div class="widget-header">
+          <span><span class="title-icon">🏅</span>장학내역</span>
+          <span class="widget-tools">⧉ ✕</span>
+        </div>
+        <div class="widget-body">
+          <table>
+            <thead><tr><th>장학금명</th><th>장학금액</th><th>지급일자</th></tr></thead>
+            <tbody>
+              <tr><td>국가장학(Ⅰ유형)</td><td>3,000,000</td><td>2026.09.01</td></tr>
+              <tr><td>이웃사랑2</td><td>700,000</td><td>2026.09.01</td></tr>
+              <tr><td>장학사정관(국장Ⅱ유형 대응)</td><td>1,188,000</td><td>2026.06.26</td></tr>
+              <tr><td>이웃사랑2</td><td>700,000</td><td>2026.03.01</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 주간식단표 -->
+      <div class="widget">
+        <div class="widget-header">
+          <span><span class="title-icon">🍽️</span>주간식단표</span>
+          <div class="header-flex-tools">
+            <span class="arrow">‹</span> 2026.09.16(수) 📅 <span class="arrow">›</span>
+          </div>
+        </div>
+        <div class="meal-tabs">
+          <div class="tab active">비전타워</div>
+          <div class="tab">교육대학원</div>
+          <div class="tab">학생생활관</div>
+          <div class="tab">체육관(예)</div>
+        </div>
+        <div class="widget-body">
+          <table>
+            <thead><tr><th style="width:30%;">구분</th><th>식단</th></tr></thead>
+            <tbody>
+              <tr>
+                <td>점심 B메뉴(단품)<br>5,500원</td>
+                <td style="text-align:left;">
+                  <ul class="menu-items">
+                    <li>새우튀김달걀덮밥</li>
+                    <li>유부어묵국</li>
+                    <li>타고야끼</li>
+                    <li>배추샐러드*땅콩드레싱</li>
+                  </ul>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 중앙도서관 좌석현황 -->
+      <div class="widget">
+        <div class="widget-header">
+          <span><span class="title-icon">💺</span>중앙도서관 좌석현황</span>
+          <div class="header-flex-tools">
+            <span class="toggle-label">글로벌</span>
+            <div class="toggle"><div class="knob"></div></div>
+          </div>
+        </div>
+        <div class="tabs">
+          <div class="tab active">중앙도서관</div>
+          <div class="tab">AI도서관</div>
+        </div>
+        <div class="widget-body">
+          <div class="timestamp-note">2026.09.16 08:43:46 현재</div>
+          <table>
+            <thead><tr><th>열람실명</th><th>사용</th><th>잔여</th><th>전체</th><th>이용률</th></tr></thead>
+            <tbody>
+              <tr><td>형설열람실(1F)</td><td>5</td><td>121</td><td>126</td><td class="util-good">4%</td></tr>
+              <tr><td>탐구열람실(2F)</td><td>0</td><td>156</td><td>156</td><td class="util-zero">0%</td></tr>
+              <tr><td>나눔열람실(2F)</td><td>0</td><td>282</td><td>282</td><td class="util-zero">0%</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div><!-- /widgets-grid -->
+  </div><!-- /container -->
+
+  <!-- ================= Footer ================= -->
+  <footer class="site-footer">
+    <div class="fname">G+ Gachon<br>University</div>
+    <div class="lines">
+      글로벌캠퍼스(13120) 경기도 성남시 수정구 성남대로 1342 TEL.031-750-5114<br>
+      메디컬캠퍼스(21936) 인천광역시 연수구 함박뫼로 191 TEL.032-820-4000<br>
+      © 2021 Gachon University. All Rights Reserved.
+    </div>
+    <div class="policy">개인정보 처리방침</div>
+  </footer>
+
+  <!-- 자동 로그아웃 경고 모달 -->
+  <div id="logoutModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:9999; align-items:center; justify-content:center;">
+      <div style="background:white; width:450px; padding:25px; border-radius:6px; box-shadow:0 4px 10px rgba(0,0,0,0.3);">
+          <h3 style="margin-bottom:15px; font-size:16px; color:#333;">자동 로그아웃 안내</h3>
+          <p style="margin-bottom:10px; font-size:13px; color:#666;">
+              자동 로그아웃 남은 시간 : <span id="countdownTimer" style="color:red; font-weight:bold;">00:01:00</span> 초
+          </p>
+          <p style="margin-bottom:20px; font-size:12px; color:#888; line-height:1.4;">
+              로그인 후 일정시간 동안 서비스 이용이 없어 로그아웃 됩니다.<br>로그인 시간을 연장하시겠습니까?
+          </p>
+          <div style="text-align:center; display:flex; gap:10px; justify-content:center;">
+              <button onclick="extendSession()" style="background:#004b87; color:white; border:none; padding:8px 20px; border-radius:4px; cursor:pointer; font-weight:bold;">연장하기</button>
+              <button onclick="forceLogout()" style="background:white; color:#333; border:1px solid #ccc; padding:8px 20px; border-radius:4px; cursor:pointer;">로그아웃</button>
+          </div>
+      </div>
+  </div>
+  
+  <script>
+      // 세션 전체 시간 (예: 30분 = 1800초)
+      let totalSessionSeconds = 30 * 60; 
+      let inactivityTime = 0;
+      const MAX_INACTIVITY = 25 * 60; // 25분 동안 마우스/키보드 입력이 없으면 경고
+      let countdownInterval;
+      let sessionInterval;
+      let remainingModalSeconds = 60; // 모달 뜬 후 60초 카운트다운
+
+      // 페이지 로드 시 타이머 시작
+      window.onload = function() {
+          startSessionTimer();
+      };
+
+      // 사용자 활동 감지 시 비활동 시간 초기화
+      window.onmousemove = resetInactivity;
+      window.onkeypress = resetInactivity;
+
+      function resetInactivity() {
+          inactivityTime = 0;
+      }
+
+      // 1초마다 전체 세션 시간 및 비활동 시간 체크
+      sessionInterval = setInterval(() => {
+          // 1. 상단 헤더 타이머 감소
+          if (totalSessionSeconds > 0) {
+              totalSessionSeconds--;
+              updateHeaderTimerDisplay();
+          } else {
+              // 시간이 0이 되면 강제 로그아웃
+              forceLogout();
+          }
+
+          // 2. 비활동 시간 체크
+          inactivityTime++;
+          if (inactivityTime >= MAX_INACTIVITY) {
+              showLogoutModal();
+          }
+      }, 1000);
+
+      // 상단 헤더 타이머 텍스트 업데이트 (HH:MM:SS 형식)
+      function updateHeaderTimerDisplay() {
+          let hours = String(Math.floor(totalSessionSeconds / 3600)).padStart(2, '0');
+          let minutes = String(Math.floor((totalSessionSeconds % 3600) / 60)).padStart(2, '0');
+          let seconds = String(totalSessionSeconds % 60).padStart(2, '0');
+          document.getElementById('headerTimer').innerText = `${hours}:${minutes}:${seconds}`;
+      }
+
+      // 자동 로그아웃 경고 모달 표시
+      function showLogoutModal() {
+          const modal = document.getElementById('logoutModal');
+          modal.style.display = 'flex';
+          
+          clearInterval(countdownInterval);
+          remainingModalSeconds = 60;
+          
+          countdownInterval = setInterval(() => {
+              remainingModalSeconds--;
+              let min = String(Math.floor(remainingModalSeconds / 60)).padStart(2, '0');
+              let sec = String(remainingModalSeconds % 60).padStart(2, '0');
+              document.getElementById('countdownTimer').innerText = `00:${min}:${sec}`;
+
+              if (remainingModalSeconds <= 0) {
+                  clearInterval(countdownInterval);
+                  forceLogout();
+              }
+          }, 1000);
+      }
+
+      // 시간 연장하기 (헤더의 '연장' 버튼 또는 모달의 '연장하기' 버튼 공용)
+      function extendSession() {
+          totalSessionSeconds = 30 * 60; // 30분으로 재설정
+          inactivityTime = 0;            // 비활동 시간 초기화
+          updateHeaderTimerDisplay();
+          
+          const modal = document.getElementById('logoutModal');
+          modal.style.display = 'none';
+          clearInterval(countdownInterval);
+          
+          alert("로그인 시간이 연장되었습니다.");
+      }
+
+      // 강제 로그아웃
+      function forceLogout() {
+          alert("세션이 만료되어 로그아웃됩니다.");
+          location.href = "/main-view"; // 로그아웃 처리 경로
+      }
+  </script>
+  
+  
+</body>
+</html>
