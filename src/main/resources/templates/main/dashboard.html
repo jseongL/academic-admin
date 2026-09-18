@@ -298,6 +298,17 @@
     .toolbar{flex-wrap:wrap;}
     .toolbar .tool{flex:1 1 25%;}
   }
+  .meal-week-nav{display:flex;align-items:center;justify-content:center;gap:14px;padding:10px 12px;border-bottom:1px solid var(--border);background:#fff;}
+  .meal-week-arrow{width:23px;height:23px;border:1px solid #d8dde6;display:flex;align-items:center;justify-content:center;color:#7c8494;background:#fff;font-size:16px;cursor:pointer;border-radius:2px;}
+  .meal-week-arrow:hover{background:var(--blue-50);color:var(--blue-600);}
+  .meal-week-range{font-size:12px;font-weight:700;color:var(--navy-800);min-width:150px;text-align:center;}
+  .meal-day-tabs{display:grid;grid-template-columns:repeat(7,1fr);border-bottom:1px solid var(--border);background:#fafbfd;}
+  .meal-day{padding:7px 2px;text-align:center;font-size:10.5px;color:#7c8494;border-right:1px solid #eef0f3;cursor:pointer;}
+  .meal-day:last-child{border-right:none;}
+  .meal-day:hover{background:var(--blue-50);color:var(--blue-600);}
+  .meal-day.active{background:var(--blue-600);color:#fff;font-weight:700;}
+  .meal-empty{text-align:center!important;padding:30px!important;color:#8b93a0!important;}
+  
 </style>
 </head>
 <body>
@@ -730,39 +741,33 @@
         </div>
       </div>
 
-      <!-- 주간식단표 -->
-      <div class="widget">
-        <div class="widget-header">
-          <span><span class="title-icon">🍽️</span>주간식단표</span>
-          <div class="header-flex-tools">
-            <span class="arrow">‹</span> 2026.09.16(수) 📅 <span class="arrow">›</span>
-          </div>
-        </div>
-        <div class="meal-tabs">
-          <div class="tab active">비전타워</div>
-          <div class="tab">교육대학원</div>
-          <div class="tab">학생생활관</div>
-          <div class="tab">체육관(예)</div>
-        </div>
-        <div class="widget-body">
-          <table>
-            <thead><tr><th style="width:30%;">구분</th><th>식단</th></tr></thead>
-            <tbody>
-              <tr>
-                <td>점심 B메뉴(단품)<br>5,500원</td>
-                <td style="text-align:left;">
-                  <ul class="menu-items">
-                    <li>새우튀김달걀덮밥</li>
-                    <li>유부어묵국</li>
-                    <li>타고야끼</li>
-                    <li>배추샐러드*땅콩드레싱</li>
-                  </ul>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
+	  <!-- ================= 주간식단표 ================= -->
+	  <div class="widget">
+	  <div class="widget-header"><span><span class="title-icon">🍽️</span>주간식단표</span><span th:text="${selectedMealDateLabel}">2026.09.18(금)</span></div>
+
+	  <div class="meal-tabs"><div class="tab active" onclick="showMealTab('vision',this)">비전타워</div><div class="tab" onclick="showMealTab('education',this)">교육대학원</div><div class="tab" onclick="showMealTab('dormitory',this)">학생생활관</div><div class="tab" onclick="showMealTab('medical',this)">체육관(메디컬)</div></div>
+
+	  <div class="meal-week-nav"><a class="meal-week-arrow" th:href="@{/dashboard(mealDate=${prevWeekDate})}">‹</a><span class="meal-week-range" th:text="${mealWeekRange}">2026.09.14 ~ 2026.09.20</span><a class="meal-week-arrow" th:href="@{/dashboard(mealDate=${nextWeekDate})}">›</a></div>
+
+	  <div class="meal-day-tabs"><a th:each="day : ${mealWeekDays}" th:href="@{/dashboard(mealDate=${day.date})}" class="meal-day" th:classappend="${day.active} ? ' active' : ''" th:text="${day.label}">월 09.14</a></div>
+
+	  <div id="meal-vision" class="meal-panel">
+	  <div class="widget-body"><table><thead><tr><th style="width:30%;">구분</th><th>식단</th></tr></thead><tbody><tr th:if="${visionMeal.available}"><td><span th:text="${visionMeal.mealType}">점심 B메뉴(단품)</span><br><span th:text="${visionMeal.price}">5,500원</span></td><td style="text-align:left;"><ul class="menu-items"><li th:each="menu : ${visionMeal.menus}" th:text="${menu}">메뉴</li></ul></td></tr><tr th:if="${!visionMeal.available}"><td colspan="2" class="meal-empty">선택한 날짜에 등록된 식단이 없습니다.</td></tr></tbody></table></div>
+	  </div>
+
+	  <div id="meal-education" class="meal-panel" style="display:none;">
+	  <div class="widget-body"><table><thead><tr><th style="width:30%;">구분</th><th>식단</th></tr></thead><tbody><tr th:if="${educationMeal.available}"><td><span th:text="${educationMeal.mealType}">점심</span><br><span th:text="${educationMeal.price}">6,000원</span></td><td style="text-align:left;"><ul class="menu-items"><li th:each="menu : ${educationMeal.menus}" th:text="${menu}">메뉴</li></ul></td></tr><tr th:if="${!educationMeal.available}"><td colspan="2" class="meal-empty">선택한 날짜에 등록된 식단이 없습니다.</td></tr></tbody></table></div>
+	  </div>
+
+	  <div id="meal-dormitory" class="meal-panel" style="display:none;">
+	  <div class="widget-body"><table><thead><tr><th style="width:30%;">구분</th><th>식단</th></tr></thead><tbody><tr th:if="${dormitoryMeal.available}"><td><span th:text="${dormitoryMeal.mealType}">점심</span><br><span th:text="${dormitoryMeal.price}">6,000원</span></td><td style="text-align:left;"><ul class="menu-items"><li th:each="menu : ${dormitoryMeal.menus}" th:text="${menu}">메뉴</li></ul></td></tr><tr th:if="${!dormitoryMeal.available}"><td colspan="2" class="meal-empty">선택한 날짜에 등록된 식단이 없습니다.</td></tr></tbody></table></div>
+	  </div>
+
+	  <div id="meal-medical" class="meal-panel" style="display:none;">
+	  <div class="widget-body"><table><thead><tr><th style="width:30%;">구분</th><th>식단</th></tr></thead><tbody><tr th:if="${medicalMeal.available}"><td><span th:text="${medicalMeal.mealType}">점심</span><br><span th:text="${medicalMeal.price}">5,000원</span></td><td style="text-align:left;"><ul class="menu-items"><li th:each="menu : ${medicalMeal.menus}" th:text="${menu}">메뉴</li></ul></td></tr><tr th:if="${!medicalMeal.available}"><td colspan="2" class="meal-empty">선택한 날짜에 등록된 식단이 없습니다.</td></tr></tbody></table></div>
+	  </div>
+	  </div>
+	  
 
       <!-- 중앙도서관 좌석현황 -->
       <div class="widget">
@@ -908,6 +913,10 @@
           alert("세션이 만료되어 로그아웃됩니다.");
           location.href = "/main-view"; // 로그아웃 처리 경로
       }
+	  
+	  //식단표 자바스크립트
+	  function showMealTab(type,clickedTab){document.querySelectorAll('.meal-panel').forEach(function(panel){panel.style.display='none';});document.querySelectorAll('.meal-tabs .tab').forEach(function(tab){tab.classList.remove('active');});document.getElementById('meal-'+type).style.display='block';clickedTab.classList.add('active');}
+  
   </script>
   
   
